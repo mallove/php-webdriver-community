@@ -9,12 +9,19 @@ use Facebook\WebDriver\Remote\RemoteWebDriver;
 require_once('vendor/autoload.php');
  
 // start Firefox with 5 second timeout
-$host = 'http://localhost:4444/wd/hub'; // this is the default
+// $host = 'http://localhost:4445/wd/hub'; // this is the default
+// $capabilities = DesiredCapabilities::firefox();
+// $driver = RemoteWebDriver::create($host, $capabilities, 5000);  # Connection refused?
+ 
+// start EXISTING Firefox
+$host = 'http://localhost:4445/wd/hub'; // this is the default
 $capabilities = DesiredCapabilities::firefox();
-$driver = RemoteWebDriver::create($host, $capabilities, 5000);
+// createBySessionID($session_id, $selenium_server_url = 'http://localhost:4444/wd/hub')
+$driver = new RemoteWebDriver()->createBySessionID('f5ce7529-a53c-4982-9646-5ebe9e737499', $host);
  
 // navigate to 'http://www.seleniumhq.org/'
-$driver->get('http://www.seleniumhq.org/');
+// $driver->get('http://www.seleniumhq.org/');
+$driver->get('http://localhost/evp/blog/day-life-potus-0');
  
 // adding cookie
 $driver->manage()->deleteAllCookies();
