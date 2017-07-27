@@ -87,72 +87,106 @@ class WebDriverException extends Exception
     {
         switch ($status_code) {
             case 1:
+                debug_print_backtrace();
                 throw new IndexOutOfBoundsException($message, $results);
             case 2:
+                debug_print_backtrace();
                 throw new NoCollectionException($message, $results);
             case 3:
+                debug_print_backtrace();
                 throw new NoStringException($message, $results);
             case 4:
+                debug_print_backtrace();
                 throw new NoStringLengthException($message, $results);
             case 5:
+                debug_print_backtrace();
                 throw new NoStringWrapperException($message, $results);
             case 6:
+                debug_print_backtrace();
                 throw new NoSuchDriverException($message, $results);
             case 7:
+                debug_print_backtrace();
                 throw new NoSuchElementException($message, $results);
             case 8:
+                debug_print_backtrace();
                 throw new NoSuchFrameException($message, $results);
             case 9:
+                debug_print_backtrace();
                 throw new UnknownCommandException($message, $results);
             case 10:
+                debug_print_backtrace();
                 throw new StaleElementReferenceException($message, $results);
             case 11:
+                debug_print_backtrace();
                 throw new ElementNotVisibleException($message, $results);
             case 12:
+                debug_print_backtrace();
                 throw new InvalidElementStateException($message, $results);
             case 13:
+                debug_print_backtrace();
                 throw new UnknownServerException($message, $results);
             case 14:
+                debug_print_backtrace();
                 throw new ExpectedException($message, $results);
             case 15:
+                debug_print_backtrace();
                 throw new ElementNotSelectableException($message, $results);
             case 16:
+                debug_print_backtrace();
                 throw new NoSuchDocumentException($message, $results);
             case 17:
+                debug_print_backtrace();
                 throw new UnexpectedJavascriptException($message, $results);
             case 18:
+                debug_print_backtrace();
                 throw new NoScriptResultException($message, $results);
             case 19:
+                debug_print_backtrace();
                 throw new XPathLookupException($message, $results);
             case 20:
+                debug_print_backtrace();
                 throw new NoSuchCollectionException($message, $results);
             case 21:
+                debug_print_backtrace();
                 throw new TimeOutException($message, $results);
             case 22:
+                debug_print_backtrace();
                 throw new NullPointerException($message, $results);
             case 23:
+                debug_print_backtrace();
                 throw new NoSuchWindowException($message, $results);
             case 24:
+                debug_print_backtrace();
                 throw new InvalidCookieDomainException($message, $results);
             case 25:
+                debug_print_backtrace();
                 throw new UnableToSetCookieException($message, $results);
             case 26:
+                debug_print_backtrace();
                 throw new UnexpectedAlertOpenException($message, $results);
             case 27:
+                debug_print_backtrace();
                 throw new NoAlertOpenException($message, $results);
             case 28:
+                debug_print_backtrace();
                 throw new ScriptTimeoutException($message, $results);
             case 29:
+                debug_print_backtrace();
                 throw new InvalidCoordinatesException($message, $results);
             case 30:
+                debug_print_backtrace();
                 throw new IMENotAvailableException($message, $results);
             case 31:
+                debug_print_backtrace();
                 throw new IMEEngineActivationFailedException($message, $results);
             case 32:
+                debug_print_backtrace();
                 throw new InvalidSelectorException($message, $results);
             case 33:
+                debug_print_backtrace();
                 throw new SessionNotCreatedException($message, $results);
             case 34:
+                debug_print_backtrace();
                 throw new MoveTargetOutOfBoundsException($message, $results);
             default:
                 debug_print_backtrace();

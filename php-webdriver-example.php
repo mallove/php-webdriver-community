@@ -9,6 +9,7 @@ use Facebook\WebDriver\Interactions;
 use Facebook\WebDriver\Interactions\Touch;
 use Facebook\WebDriver\Remote;
 
+
 require_once('vendor/autoload.php');
 
 // start Firefox with 5 second timeout
@@ -20,7 +21,7 @@ require_once('vendor/autoload.php');
 $host = 'http://localhost:4445/wd/hub'; // this is the default
 $capabilities = DesiredCapabilities::firefox();
 // createBySessionID($session_id, $selenium_server_url = 'http://localhost:4444/wd/hub')
-//$driver = RemoteWebDriver::createBySessionID('ff291d17-f181-437e-a836-cc2d15dbbccc' /* file_get_contents("start-a-firefox-webdriver-instance.php.out")*/, $host);
+//$driver = RemoteWebDriver::createBySessionID('ff291d17-f181-437e-a836-cc2d15dbbccc', $host);
 $session_id = rtrim(file_get_contents("start-a-firefox-webdriver-instance.php.out"));
 //var_dump($session_id);
 $driver = RemoteWebDriver::createBySessionID($session_id, $host);
@@ -40,7 +41,7 @@ $driver->get('http://localhost/evp/blog/day-life-potus-0');
 
 try {
 
-  $mouse = new RemoteMouse();
+  $mouse = new \Facebook\WebDriver\Remote\RemoteMouse(new Remote\RemoteExecuteMethod($driver));
 
   // Move to the gear icon in order to make the edit menu item visible.
   $contextual_links_selector = WebDriverBy::cssSelector('div.contextual-links-wrapper.contextual-links-processed');
@@ -54,10 +55,14 @@ try {
   # Move to the top-right corner of the content div
   $web_driver_action->moveToElement($div_content, $div_content->getSize()->getWidth() - 5, 0);
 
-  $contextual_links = $driver->findElement($contextual_links_selector);
+  $contextual_links_element = $driver->findElement($contextual_links_selector);
   $driver->wait()->until(WebDriverExpectedCondition::visibilityOfElementLocated($contextual_links_selector));
-  $web_driver_action->moveToElement($contextual_links, $contextual_links->getSize()->getWidth() - 2, 0);
-  $contextual_links->click();
+  $web_driver_action->moveToElement($contextual_links_element, $contextual_links_element->getSize()->getWidth() - 2, 0);
+
+  # Does this move the mouse?
+  $mouse->mouseMove($contextual_links_element->getCoordinates());
+
+  $contextual_links_element->click();
 
   // Order matters here.
   // This link isn't visible until we move to it's parent element (the gear icon)
