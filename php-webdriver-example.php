@@ -5,6 +5,8 @@ namespace Facebook\WebDriver;
  
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\Interactions;
+use Facebook\WebDriver\Interactions\Touch;
  
 require_once('vendor/autoload.php');
  
@@ -36,16 +38,32 @@ $driver->get('http://localhost/evp/blog/day-life-potus-0');
 # print_r($cookies);
  
 try {
-  // click the link 'About'
-  $link_edit = $driver->findElement(
-      WebDriverBy::cssSelector('li.link-count-node-edit.first')
-  );
 
-  $link_gear = $driver->findElement(
-      WebDriverBy::cssSelector('div.contextual-links-wrapper.contextual-links-processed')
-  );
-  $link_edit->moveToElement();
-  $link_gear->click();
+  // Move to the gear icon in order to make the edit menu item visible.
+  $contextual_links_selector = WebDriverBy::cssSelector('div.contextual-links-wrapper.contextual-links-processed');
+
+  $div_content_selector = WebDriverBy::cssSelector('div.node-content');
+  $div_content = $driver->findElement($div_content_selector);
+  $driver->wait()->until(WebDriverExpectedCondition::visibilityOfElementLocated($div_content_selector));
+
+  $web_driver_action = new \Facebook\WebDriver\Interactions\WebDriverActions($driver);
+
+  # Move to the top-right corner of the content div
+  $web_driver_action->moveToElement($div_content, $div_content->getSize()->getWidth() - 5, 0);
+
+  $contextual_links = $driver->findElement($contextual_links_selector);
+  $driver->wait()->until(WebDriverExpectedCondition::visibilityOfElementLocated($contextual_links_selector));
+  $web_driver_action->moveToElement($contextual_links, $contextual_links->getSize()->getWidth() - 2, 0);
+  $contextual_links->click();
+
+  // Order matters here.
+  // This link isn't visible until we move to it's parent element (the gear icon)
+  $link_edit_selector = WebDriverBy::cssSelector('li.link-count-node-edit.first');
+  $driver->wait()->until(WebDriverExpectedCondition::visibilityOfElementLocated($link_edit_selector));
+
+  $link_edit = $driver->findElement($link_edit_selector);
+  $link_edit->click();
+
 
 } catch (Exception $e) {
   var_dump($e);

@@ -155,6 +155,7 @@ class WebDriverException extends Exception
             case 34:
                 throw new MoveTargetOutOfBoundsException($message, $results);
             default:
+                debug_print_backtrace();
                 throw new UnrecognizedExceptionException($message, $results);
         }
     }
