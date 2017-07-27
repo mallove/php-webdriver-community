@@ -17,7 +17,7 @@ require_once('vendor/autoload.php');
 $host = 'http://localhost:4445/wd/hub'; // this is the default
 $capabilities = DesiredCapabilities::firefox();
 // createBySessionID($session_id, $selenium_server_url = 'http://localhost:4444/wd/hub')
-$driver = new RemoteWebDriver()->createBySessionID('f5ce7529-a53c-4982-9646-5ebe9e737499', $host);
+$driver = RemoteWebDriver::createBySessionID('11612a21-4ad3-415e-b2eb-478b1cc54e77', $host);
  
 // navigate to 'http://www.seleniumhq.org/'
 // $driver->get('http://www.seleniumhq.org/');
