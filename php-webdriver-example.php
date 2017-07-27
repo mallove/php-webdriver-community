@@ -17,30 +17,43 @@ require_once('vendor/autoload.php');
 $host = 'http://localhost:4445/wd/hub'; // this is the default
 $capabilities = DesiredCapabilities::firefox();
 // createBySessionID($session_id, $selenium_server_url = 'http://localhost:4444/wd/hub')
-$driver = RemoteWebDriver::createBySessionID('11612a21-4ad3-415e-b2eb-478b1cc54e77', $host);
- 
+//$driver = RemoteWebDriver::createBySessionID('ff291d17-f181-437e-a836-cc2d15dbbccc' /* file_get_contents("start-a-firefox-webdriver-instance.php.out")*/, $host);
+$session_id = rtrim(file_get_contents("start-a-firefox-webdriver-instance.php.out"));
+//var_dump($session_id);
+$driver = RemoteWebDriver::createBySessionID($session_id, $host);
+
 // navigate to 'http://www.seleniumhq.org/'
 // $driver->get('http://www.seleniumhq.org/');
 $driver->get('http://localhost/evp/blog/day-life-potus-0');
  
 // adding cookie
-$driver->manage()->deleteAllCookies();
+# $driver->manage()->deleteAllCookies();
+#  
+# $cookie = new Cookie('cookie_name', 'cookie_value');
+# $driver->manage()->addCookie($cookie);
+#  
+# $cookies = $driver->manage()->getCookies();
+# print_r($cookies);
  
-$cookie = new Cookie('cookie_name', 'cookie_value');
-$driver->manage()->addCookie($cookie);
- 
-$cookies = $driver->manage()->getCookies();
-print_r($cookies);
- 
-// click the link 'About'
-$link = $driver->findElement(
-    WebDriverBy::id('menu_about')
-);
-$link->click();
+try {
+  // click the link 'About'
+  $link_edit = $driver->findElement(
+      WebDriverBy::cssSelector('li.link-count-node-edit.first')
+  );
+
+  $link_gear = $driver->findElement(
+      WebDriverBy::cssSelector('div.contextual-links-wrapper.contextual-links-processed')
+  );
+  $link_edit->moveToElement();
+  $link_gear->click();
+
+} catch (Exception $e) {
+  var_dump($e);
+}
  
 // wait until the page is loaded
 $driver->wait()->until(
-    WebDriverExpectedCondition::titleContains('About')
+    WebDriverExpectedCondition::titleContains('Edit Blog entry A day in the life')
 );
  
 // print the title of the current page
@@ -65,4 +78,4 @@ $driver->wait(10)->until(
 );
  
 // close the Firefox
-$driver->quit();
+// $driver->quit();
