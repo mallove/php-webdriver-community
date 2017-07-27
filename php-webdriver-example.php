@@ -1,20 +1,21 @@
 <?php
 // An example of using php-webdriver.
- 
+
 namespace Facebook\WebDriver;
- 
+
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Interactions;
 use Facebook\WebDriver\Interactions\Touch;
- 
+use Facebook\WebDriver\Remote;
+
 require_once('vendor/autoload.php');
- 
+
 // start Firefox with 5 second timeout
 // $host = 'http://localhost:4445/wd/hub'; // this is the default
 // $capabilities = DesiredCapabilities::firefox();
 // $driver = RemoteWebDriver::create($host, $capabilities, 5000);  # Connection refused?
- 
+
 // start EXISTING Firefox
 $host = 'http://localhost:4445/wd/hub'; // this is the default
 $capabilities = DesiredCapabilities::firefox();
@@ -27,17 +28,19 @@ $driver = RemoteWebDriver::createBySessionID($session_id, $host);
 // navigate to 'http://www.seleniumhq.org/'
 // $driver->get('http://www.seleniumhq.org/');
 $driver->get('http://localhost/evp/blog/day-life-potus-0');
- 
+
 // adding cookie
 # $driver->manage()->deleteAllCookies();
-#  
+#
 # $cookie = new Cookie('cookie_name', 'cookie_value');
 # $driver->manage()->addCookie($cookie);
-#  
+#
 # $cookies = $driver->manage()->getCookies();
 # print_r($cookies);
- 
+
 try {
+
+  $mouse = new RemoteMouse();
 
   // Move to the gear icon in order to make the edit menu item visible.
   $contextual_links_selector = WebDriverBy::cssSelector('div.contextual-links-wrapper.contextual-links-processed');
@@ -68,32 +71,32 @@ try {
 } catch (Exception $e) {
   var_dump($e);
 }
- 
+
 // wait until the page is loaded
 $driver->wait()->until(
     WebDriverExpectedCondition::titleContains('Edit Blog entry A day in the life')
 );
- 
+
 // print the title of the current page
 echo "The title is '" . $driver->getTitle() . "'\n";
- 
+
 // print the URI of the current page
 echo "The current URI is '" . $driver->getCurrentURL() . "'\n";
- 
+
 // write 'php' in the search box
 $driver->findElement(WebDriverBy::id('q'))
     ->sendKeys('php');
- 
+
 // submit the form
 $driver->findElement(WebDriverBy::id('submit'))
     ->click(); // submit() does not work in Selenium 3 because of bug https://github.com/SeleniumHQ/selenium/issues/3398
- 
+
 // wait at most 10 seconds until at least one result is shown
 $driver->wait(10)->until(
     WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
         WebDriverBy::className('gsc-result')
     )
 );
- 
+
 // close the Firefox
 // $driver->quit();
